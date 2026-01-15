@@ -1,11 +1,12 @@
 "use client";
 import { useWeb3Market } from "@/hooks/useWeb3Market";
 import { CharacterCard } from "@/components/CharacterCard";
+import { CharacterSkeleton } from "@/components/CharacterSkeleton";
 
 export default function Home() {
   const { account, characters, history, loading, connectWallet, buyCharacter } =
     useWeb3Market();
-console.log("history", history);
+  console.log("history", history);
   return (
     <div className="p-8 font-sans mx-auto max-w-504">
       <header className="flex justify-between items-center mb-12">
@@ -28,16 +29,22 @@ console.log("history", history);
 
       <div className="flex flex-col xl:flex-row items-center-safe xl:items-start justify-center gap-12 ">
         {/* Character Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:w-[60%]">
-          {characters.map((char) => (
-            <CharacterCard
-              key={char.id}
-              characters={char}
-              account={account}
-              loading={loading}
-              onBuy={buyCharacter}
-            />
-          ))}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:w-[60%] max-w-4xl">
+          {loading || characters.length === 0
+            ? // แสดง Skeleton 6 อันตอนกำลังโหลดครั้งแรก
+              Array.from({ length: 6 }).map((_, i) => (
+                <CharacterSkeleton key={i} />
+              ))
+            : // แสดงข้อมูลจริง
+              characters.map((char) => (
+                <CharacterCard
+                  key={char.id}
+                  characters={char}
+                  account={account}
+                  loading={loading}
+                  onBuy={buyCharacter}
+                />
+              ))}
         </section>
 
         {/* Purchase History */}

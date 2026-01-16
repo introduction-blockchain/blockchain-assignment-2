@@ -2,23 +2,31 @@
 import { useWeb3Market } from "@/hooks/useWeb3Market";
 import { CharacterCard } from "@/components/CharacterCard";
 import { CharacterSkeleton } from "@/components/CharacterSkeleton";
+import Loading from "@/components/loading/loading";
 
 export default function Home() {
-  const { account, characters, history, loading, connectWallet, buyCharacter } =
-    useWeb3Market();
-  console.log("history", history);
+  const {
+    account,
+    characters,
+    history,
+    loading,
+    transactionLoading,
+    connectWallet,
+    buyCharacter,
+  } = useWeb3Market();
+
   return (
-    <div className="p-8 font-sans mx-auto max-w-504">
+    <div className="p-8 font-sans mx-auto max-w-504 ">
       <header className="flex justify-between items-center mb-12">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-          🧙‍♂️ Stranger Things Market
+          🚲 Stranger Things Market 🧇
         </h1>
         <button
           onClick={connectWallet}
-          className={`px-4 py-2 rounded-lg font-bold cursor-pointer ${
+          className={`px-4 py-2 rounded-lg font-bold  ${
             account
               ? "bg-green-500 text-white"
-              : "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
           }`}
         >
           {account
@@ -27,30 +35,36 @@ export default function Home() {
         </button>
       </header>
 
-      <div className="flex flex-col xl:flex-row items-center-safe xl:items-start justify-center gap-12 ">
+      <div className="relative flex flex-col xl:flex-row  gap-4 ">
         {/* Character Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:w-[60%] max-w-4xl">
-          {loading || characters.length === 0
-            ? // แสดง Skeleton 6 อันตอนกำลังโหลดครั้งแรก
-              Array.from({ length: 6 }).map((_, i) => (
-                <CharacterSkeleton key={i} />
-              ))
-            : // แสดงข้อมูลจริง
-              characters.map((char) => (
-                <CharacterCard
-                  key={char.id}
-                  characters={char}
-                  account={account}
-                  loading={loading}
-                  onBuy={buyCharacter}
-                />
-              ))}
-        </section>
+        {transactionLoading ? (
+          <div className=" xl:w-[60%] xl:max-w-4xl w-full  p-2 flex items-center justify-center">
+            <Loading />
+          </div>
+        ) : (
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:w-[60%] xl:max-w-4xl w-full p-2 ">
+            {loading || characters.length === 0
+              ? // แสดง Skeleton 6 อันตอนกำลังโหลดครั้งแรก
+                Array.from({ length: 6 }).map((_, i) => (
+                  <CharacterSkeleton key={i} />
+                ))
+              : // แสดงข้อมูลจริง
+                characters.map((char) => (
+                  <CharacterCard
+                    key={char.id}
+                    characters={char}
+                    account={account}
+                    loading={transactionLoading}
+                    onBuy={buyCharacter}
+                  />
+                ))}
+          </section>
+        )}
 
         {/* Purchase History */}
-        <section className="relative w-full xl:w-[40%] h-screen">
-          <div className="sticky top-[2%]">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-700 dark:text-gray-200">
+        <section className=" flex-1 w-full xl:w-[40%] flex flex-col p-2 ">
+          <div className="sticky top-[2%] ">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
               📜 Purchase History
             </h2>
             <div className="bg-white shadow-md rounded-lg overflow-x-auto">

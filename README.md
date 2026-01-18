@@ -5,7 +5,8 @@
 ---
 
 ## 🖼️ ตัวอย่างหน้าเว็บแอปพลิเคชัน
-![Stranger Things Market](/image.png)
+![Stranger Things Market](/homepage1.png)
+![Stranger Things Market](/homepage2.png)
 
 ---
 

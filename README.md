@@ -138,6 +138,7 @@ export const CONTRACT_ABI = [...];
 ### 3️⃣ Install Dependencies
 
 ```bash
+npm install
 npm install ethers
 ```
 
